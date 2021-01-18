@@ -117,6 +117,11 @@ console.log(rangeList);
 // 1. Determine the average basket of the marketplace
 // 2. Log the average
 
+var average = 0;
+
+marketplace.forEach(element => average += element.price);
+average = average/marketplace.length;
+console.log(average);
 
 
 
