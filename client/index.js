@@ -33,7 +33,8 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
 // 2. Log the variable
-
+const cheap = MY_FAVORITE_BRANDS[1]['url'];
+console.log(cheap)
 
 
 
@@ -47,15 +48,22 @@ console.log(MY_FAVORITE_BRANDS[0]);
  * 👕
  */
 
+ console.log(marketplace);
+
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
-
+nb = 0;
+marketplace.forEach(element => nb+=1);
+console.log(nb);
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 // 2. Log the variable
 // 3. Log how many brands we have
+var names = [];
+MY_FAVORITE_BRANDS.forEach(brand => names.push(brand['name']))
+console.log(names)
 
 
 // 🎯 TODO: Sort by price
