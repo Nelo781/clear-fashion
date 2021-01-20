@@ -47,7 +47,7 @@ console.log(cheap)
  * The variable is loaded by the file data.js
  * 👕
  */
-
+console.log('%cMarketPlace dataset',"color: yellow")
  console.log(marketplace);
 
 // 🎯 TODO: Number of products
@@ -55,20 +55,19 @@ console.log(cheap)
 // 2. Log the variable
 var nbr = 0;
 marketplace.forEach(element => nbr+=1);
+console.log('%cNumber of Products',"color: yellow")
 console.log(nbr);
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 // 2. Log the variable
 // 3. Log how many brands we have
-var names = [];
-MY_FAVORITE_BRANDS.forEach(brand => names.push(brand['name']))
-console.log(names)
 
 
 var brandList = marketplace.map(function (product){
     return product.brand;
 });
+console.log('%cBrand List',"color: yellow")
 console.log(new Set(brandList));
 
 
@@ -78,12 +77,12 @@ console.log(new Set(brandList));
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
-function SortProductsPrice(marketplace){
-  return marketplace.sort(function(a,b){
+function SortProductsPrice(dataset){
+  return dataset.sort(function(a,b){
     return parseFloat(a.price)-parseFloat(b.price);
   });
 }
-
+console.log('%cSorted by price',"color: yellow")
 console.log(SortProductsPrice(marketplace))
 
 
@@ -97,7 +96,7 @@ function SortProductsDate(marketplace){
     return new Date(a.date) - new Date(b.date);
   });
 }
-
+console.log('%cSorted by date',"color: yellow")
 console.log(SortProductsDate(marketplace))
 
 
@@ -111,6 +110,7 @@ marketplace.forEach(function(element){
     rangeList.push(element);
   }
 });
+console.log('%c50 < Price < 100',"color: yellow");
 console.log(rangeList);
 
 // 🎯 TODO: Average Basket
@@ -147,19 +147,40 @@ console.log(average);
 //   'brand-name-n': [{...}, {...}, ..., {...}],
 // };
 //
+var brands = new Set(brandList)
+brands.forEach(element => brands[element] = [])
+marketplace.forEach(element => brands[element.brand].push({date : element.date, name : element.name, price : element.price}))
+console.log('%cSorted by brands',"color: yellow")
+console.log(brands)
+
+
 // 2. Log the variable
 // 3. Log the number of products by brands
-
+var brands_qtity =new Set(brandList)
+brands_qtity.forEach(element => brands_qtity[element] = 0)
+marketplace.forEach(element => brands_qtity[element.brand] += 1)
+console.log('%cNumber of product per Brand',"color: yellow")
+console.log(brands_qtity)
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
 
+console.log('%cSorted by brand and price',"color: red")
+
+var brands_sorted = new Set(brandList)
+brands_sorted.forEach(element => brands_sorted[element] = brands[element])
+brands_sorted = brands_sorted.forEach(element => console.log("%c"+element,"color: yellow",SortProductsPrice(brands_sorted[element])));
+
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
+console.log('%cSorted by brand and date from oldest',"color: red")
 
+var brands_dated = new Set(brandList)
+brands_dated.forEach(element => brands_dated[element] = brands[element])
+brands_dated = brands_dated.forEach(element => console.log("%c"+element,"color: yellow",SortProductsDate(brands_dated[element])));
 
 
 
