@@ -78,20 +78,36 @@ console.log(new Set(brandList));
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
 function SortProductsPrice(dataset){
-  return dataset.sort(function(a,b){
-    return parseFloat(a.price)-parseFloat(b.price);
+  var sorted = [];
+  dataset.forEach(element => sorted.push(element))
+  return sorted.sort(function(a,b){
+    if (a.price < b.price){
+      return -1;
+    }
+      
+    if (a.price > b.price ){
+      return 1;
+    }
+      
+    return 0;
+
   });
-}
-console.log('%cSorted by price',"color: yellow")
-console.log(SortProductsPrice(marketplace))
+  
+};
+
+var market_sorted_price = SortProductsPrice(marketplace);
+console.log('%cSorted by price',"color: yellow");
+console.log(market_sorted_price);
 
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
-function SortProductsDate(marketplace){
-  return marketplace.sort(function(a,b){
+function SortProductsDate(dataset){
+  var sorted = [];
+  dataset.forEach(element => sorted.push(element))
+  return sorted.sort(function(a,b){
     
     return new Date(a.date) - new Date(b.date);
   });
@@ -147,38 +163,38 @@ console.log(average);
 //   'brand-name-n': [{...}, {...}, ..., {...}],
 // };
 //
-var brands = new Set(brandList)
-brands.forEach(element => brands[element] = [])
-marketplace.forEach(element => brands[element.brand].push({date : element.date, name : element.name, price : element.price}))
-console.log('%cSorted by brands',"color: yellow")
-console.log(brands)
+var brands = new Set(brandList);
+brands.forEach(element => brands[element] = []);
+marketplace.forEach(element => brands[element.brand].push({date : element.date, name : element.name, price : element.price}));
+console.log('%cSorted by brands',"color: yellow");
+console.log(brands);
 
 
 // 2. Log the variable
 // 3. Log the number of products by brands
-var brands_qtity =new Set(brandList)
-brands_qtity.forEach(element => brands_qtity[element] = 0)
-marketplace.forEach(element => brands_qtity[element.brand] += 1)
-console.log('%cNumber of product per Brand',"color: yellow")
-console.log(brands_qtity)
+var brands_qtity =new Set();
+brandList.forEach(element => brands_qtity[element] = 0);
+marketplace.forEach(element => brands_qtity[element.brand] += 1);
+console.log('%cNumber of product per Brand',"color: yellow");
+console.log(brands_qtity);
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
 
-console.log('%cSorted by brand and price',"color: red")
+console.log('%cSorted by brand and price',"color: yellow");
 
-var brands_sorted = new Set(brandList)
-brands_sorted.forEach(element => brands_sorted[element] = brands[element])
-brands_sorted = brands_sorted.forEach(element => console.log("%c"+element,"color: yellow",SortProductsPrice(brands_sorted[element])));
-
+var brands_sorted = new Set();
+brands.forEach(element => brands_sorted[element] = brands[element])
+brandList.forEach(element => brands_sorted[element] = SortProductsPrice(brands_sorted[element]));
+console.log(brands_sorted)
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
-console.log('%cSorted by brand and date from oldest',"color: red")
+console.log('%cSorted by brand and date from oldest',"color: yellow")
 
-var brands_dated = new Set(brandList)
+var brands_dated = new Set()
 brands_dated.forEach(element => brands_dated[element] = brands[element])
 brands_dated = brands_dated.forEach(element => console.log("%c"+element,"color: yellow",SortProductsDate(brands_dated[element])));
 
@@ -195,9 +211,16 @@ brands_dated = brands_dated.forEach(element => console.log("%c"+element,"color: 
 // 🎯 TODO: Compute the p90 price value
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
+function get90thprice(products){
+  var index = parseInt(products.length*0.9);
+  return products[index];
+};
 
-
-
+var p90 = new Set();
+brandList.forEach(element => p90[element]= 0)
+brandList.forEach(element => p90[element] = get90thprice(brands_sorted[element]));
+console.log("%c9Oth percentil by brand","color:yellow")
+console.log(p90)
 
 
 /**
@@ -273,19 +296,61 @@ const COTELE_PARIS = [
 // // A new product is a product `released` less than 2 weeks.
 
 
+console.log("%cNew products !","color:yellow");
+
+COTELE_PARIS.forEach(function(element){
+  var today = new Date().getTime();
+  var realease_date = Date.parse(element.released);
+  var diff = today - realease_date;
+  var diff_days = diff*(1.15741e-8);
+  console.log(element.name);
+  if(diff_days<14){
+    console.log(true);
+  }
+  else{
+    console.log(false);
+  }
+})
+
+
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
+
+console.log("%creasonable products ? (price below 100$)","color:yellow");
+var reasonabe_products = true;
+COTELE_PARIS.forEach(function(element){
+  if(element.price >= 100){
+    reasonabe_products = false;
+  }
+})
+console.log(reasonabe_products);
 
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
+console.log("%cProduct found !","color:yellow");
+COTELE_PARIS.forEach(function(element){
+  if (element.uuid == `b56c6d88-749a-5b4c-b571-e5b5c6483131`){
+    console.log(element);
+  }
+})
 
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the new list of product
+console.log("%cProduct deleted !","color:yellow");
+COTELE_PARIS.forEach(function(element){
+  if (element.uuid == `b56c6d88-749a-5b4c-b571-e5b5c6483131`){
+    console.log(element.name + '\n This element has been removed.');
+    COTELE_PARIS.splice(COTELE_PARIS.indexOf(element),1);
+  }
+});
+console.log(COTELE_PARIS);
+
+
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -296,12 +361,19 @@ let blueJacket = {
 
 // we make a copy of blueJacket to jacket
 // and set a new property `favorite` to true
-let jacket = blueJacket;
-jacket.favorite = true;
+
+//let jacket = blueJacket;
+//jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
-// 2. What do you notice?
 
+/*
+console.log(jacket)
+console.log(blueJacket)
+*/
+
+// 2. What do you notice?
+//the two variables share the same reference (here blueJacket)
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
   'price': 110,
@@ -310,9 +382,13 @@ blueJacket = {
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
 
-
-
-
+let jacket = {};
+jacket = Object.assign(jacket,blueJacket)
+jacket.favorite = true;
+console.log("%cJacket","color:yellow");
+console.log(jacket);
+console.log("%cBlue Jacket","color:yellow");
+console.log(blueJacket)
 
 /**
  * 🎬
@@ -323,3 +399,6 @@ blueJacket = {
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
 // 2. log the localStorage
+console.log("%cLocal Storage","color:yellow");
+localStorage.setItem('favorite brands',MY_FAVORITE_BRANDS);
+console.log(localStorage);
