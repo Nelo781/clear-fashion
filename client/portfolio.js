@@ -4,13 +4,14 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+let brands  = [];
 
-// inititiqte selectors
+// inititiate selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
-
+const selectBrand = document.querySelector('#brand-select');
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -20,6 +21,8 @@ const setCurrentProducts = ({result, meta}) => {
   currentProducts = result;
   currentPagination = meta;
 };
+
+
 
 /**
  * Fetch products from api
@@ -71,6 +74,21 @@ const renderProducts = products => {
   sectionProducts.appendChild(fragment);
 };
 
+const renderBrands = products => {
+  var brands = [];
+  products.forEach(element => {
+    if(brands.includes(element.brand) == false){
+      brands.push(element.brand);
+    }
+    
+  });
+  const options = Array.from(
+    {'length': brands},
+    (value, index) => `<option value="${brands[index]}">${brands[index]}</option>`
+  ).join('');
+  selectBrand.innerHTML = options;
+};
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -86,6 +104,12 @@ const renderPagination = pagination => {
   selectPage.selectedIndex = currentPage - 1;
 };
 
+
+
+
+
+
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -100,6 +124,8 @@ const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
+  renderBrands(products)
+  
 };
 
 /**
@@ -110,8 +136,21 @@ const render = (products, pagination) => {
  * Select the number of products to display
  * @type {[type]}
  */
+
 selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+    .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
+});
+
+selectPage.addEventListener('change', event => {
+  fetchProducts(parseInt(event.target.value),selectShow.value)
+    .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
+});
+
+selectBrand.addEventListener('change', event =>{
+  fetchProducts(parseInt(event.target.value),selectShow.value)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
