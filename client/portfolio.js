@@ -15,6 +15,8 @@ const selectBrand = document.querySelector('#brand-select');
 const selectSort = document.querySelector('#sort-select');
 const availableProducts = document.querySelector('#available-prod');
 const lastReleased = document.querySelector('#last-released');
+const spanp50 = document.querySelector('#p50')
+const spanp90 = document.querySelector('#p90')
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -101,9 +103,6 @@ const renderProducts = products => {
     products = products.filter(prod => prod.brand == selectBrand.value);
   }
 
-  
-  
-  
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
   const template = products
@@ -210,7 +209,29 @@ const renderIndicators = (pagination,products) => {
     }
   });
   
-
+  //spanp50.innerHTML = 
+  
+  var prods = Array.prototype.slice.call(sectionProducts.getElementsByTagName('div'));  
+  
+  prods = prods.sort( function(a,b){
+    if (Number(a.lastElementChild.innerHTML) < (Number(b.lastElementChild.innerHTML))){
+      
+      return -1;
+    }
+      
+    if (Number(a.lastElementChild.innerHTML) > (Number(b.lastElementChild.innerHTML))){
+      
+      return 1;
+    }
+      
+    return 0;
+  });
+  //console.log(prods);
+  console.log(prods[1]);
+  spanp50.innerHTML = prods[parseInt(prods.length/2+1)].lastElementChild.innerHTML;
+  spanp90.innerHTML = prods[parseInt(prods.length*0.90+1)].lastElementChild.innerHTML;
+  
+  //spanp50.innerHTML = spanp50.innerHTML/(prods.length-1))
 };
 
 
