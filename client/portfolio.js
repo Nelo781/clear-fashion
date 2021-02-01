@@ -17,6 +17,8 @@ const availableProducts = document.querySelector('#available-prod');
 const lastReleased = document.querySelector('#last-released');
 const spanp50 = document.querySelector('#p50')
 const spanp90 = document.querySelector('#p90')
+const spanp95 = document.querySelector('#p95')
+const newProd = document.querySelector('#new-prod')
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -228,8 +230,10 @@ const renderIndicators = (pagination,products) => {
   });
   //console.log(prods);
   console.log(prods[1]);
+  fetchNewProducts().then(result =>newProd.innerHTML =result );
   spanp50.innerHTML = prods[parseInt(prods.length/2+1)].lastElementChild.innerHTML;
   spanp90.innerHTML = prods[parseInt(prods.length*0.90+1)].lastElementChild.innerHTML;
+  spanp95.innerHTML = prods[parseInt(prods.length*0.95+1)].lastElementChild.innerHTML;
   
   //spanp50.innerHTML = spanp50.innerHTML/(prods.length-1))
 };
