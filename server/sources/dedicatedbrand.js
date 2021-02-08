@@ -8,7 +8,6 @@ const cheerio = require('cheerio');
  */
 const parse = data => {
   const $ = cheerio.load(data);
-
   return $('.productList-container .productList')
     .map((i, element) => {
       const name = $(element)
@@ -27,12 +26,14 @@ const parse = data => {
     .get();
 };
 
+
 /**
  * Scrape all the products for a given url page
  * @param  {[type]}  url
  * @return {Array|null}
  */
 module.exports.scrape = async url => {
+  
   const response = await axios(url);
   const {data, status} = response;
 

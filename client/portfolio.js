@@ -1,6 +1,7 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
 
+
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
@@ -88,7 +89,8 @@ const fetchNewProducts = async() => {
       console.error(body);
       return {currentProducts, currentPagination};
     }
-    var nbNew = body.data.result.filter(a => (Date.now() - Date.parse(a.released)) > 14).length;
+    
+    var nbNew = body.data.result.filter(a => ((Date.now() - Date.parse(a.released))/86400000)/7 < 14).length;
     return nbNew;
   } catch (error) {
     console.error(error);
