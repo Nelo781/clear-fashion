@@ -10,6 +10,7 @@ const parse = data => {
     const $ = cheerio.load(data);
     return $('.product-container')
       .map((i, element) => {
+        const brand = "Adresse Paris"
         const name = $(element)
           .find('.product-name')
           .first()
@@ -22,7 +23,7 @@ const parse = data => {
             .text()
         );
   
-        return {name, price};
+        return {brand, name, price};
       })
       .get();
   };

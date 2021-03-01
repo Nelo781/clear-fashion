@@ -8,22 +8,23 @@ const cheerio = require('cheerio');
  */
 const parse = data => {
     const $ = cheerio.load(data);
-    return $(".content-row collection-page__products collection-productlinks")
+    return $(".col-md-3")
       .map((i, element) => {
-        
+        const brand = "Mud Jeans"
         const name = $(element)
           .find('.product-title')
           .text()
           .trim()
           .replace(/\s/g, ' ');
-        console.log($(element).find('.product-title'))
-        const price = parseInt(
+        const price =parseInt(
           $(element)
-            .find('.product-price')
+            .find('.product-price ').first()
             .text()
-        );
+            .replace(/Buy€/g, '')
+            .replace(/\n/g,'')
+      );
   
-        return {name, price};
+        return {brand,name, price};
       })
       .get();
   };

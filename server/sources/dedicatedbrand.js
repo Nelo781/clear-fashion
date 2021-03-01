@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+//lien api: http:/dedicatedbrand.com/en/loadfilter
 
 /**
  * Parse webpage e-shop
@@ -10,6 +11,7 @@ const parse = data => {
   const $ = cheerio.load(data);
   return $('.productList-container .productList')
     .map((i, element) => {
+      const brand = "Dedicated"
       const name = $(element)
         .find('.productList-title')
         .text()
@@ -21,7 +23,7 @@ const parse = data => {
           .text()
       );
 
-      return {name, price};
+      return {brand, name, price};
     })
     .get();
 };
