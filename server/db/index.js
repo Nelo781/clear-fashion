@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const MONGODB_DB_NAME = 'clearfashion';
 const MONGODB_COLLECTION = 'products';
-const MONGODB_URI = 'mongodb+srv://Jules:I0NVntiGlxirlVAF@cluster0.ezy9b.mongodb.net/myFirstDatabase?retryWrites=true&writeConcern=majority';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 let client = null;
 let database = null;
@@ -18,7 +18,7 @@ const getDB = module.exports.getDB = async () => {
     if (database) {
       return database;
     }
-    console.log(process.env);
+    console.log(process.env.MONGODB_URI);
     client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true, 'useUnifiedTopology': true});
     database = client.db(MONGODB_DB_NAME);
 
