@@ -18,10 +18,11 @@ const getDB = module.exports.getDB = async () => {
     if (database) {
       return database;
     }
-
+    console.log(process.env);
     client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true, 'useUnifiedTopology': true});
     database = client.db(MONGODB_DB_NAME);
 
+    
     console.log('💽  Connected');
 
     return database;
