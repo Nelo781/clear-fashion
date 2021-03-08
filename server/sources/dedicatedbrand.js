@@ -1,11 +1,12 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 //lien api: http:/dedicatedbrand.com/en/loadfilter
 
 /**
- * Parse webpage e-shop
+ * Parse webpage restaurant
  * @param  {String} data - html response
- * @return {Array} products
+ * @return {Object} restaurant
  */
 const parse = data => {
   const $ = cheerio.load(data);
@@ -23,7 +24,13 @@ const parse = data => {
           .text()
       );
 
-      return {brand, name, price};
+      const _id = uuidv5($(element)
+      .find('.productList-image')
+      .text()
+      .trim()
+      .replace(/\s/g, ' '), uuidv5.URL);
+
+      return {brand, name, price,_id};
     })
     .get();
 };
