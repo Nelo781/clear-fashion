@@ -14,7 +14,6 @@ app.use(helmet());
 
 app.options('*', cors());
 
-
 app.get('/products/search', async (request, response) => {
   
   let price = request.query.price;
@@ -81,7 +80,6 @@ app.get('/products/search', async (request, response) => {
   return response.send(result) 
 });
 
-
 app.get('/products/:id', async (request, response) => {
   
  
@@ -89,6 +87,9 @@ app.get('/products/:id', async (request, response) => {
 
 });
 
+app.get('/', (request, response) => {
+  response.send({'ack': true});
+});
 
 
 app.listen(PORT);

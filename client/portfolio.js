@@ -40,10 +40,11 @@ const setCurrentProducts = ({result, meta}) => {
 const fetchProducts = async (page = 1, size = 12, ) => {
   try {
     const response = await fetch(
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
+      `https://server-two-gamma.vercel.app/products?page=${page}&size=${size}`
     );
-    const body = await response.json();
 
+    const body = await response.json();
+    
     if (body.success !== true) {
       console.error(body);
       return {currentProducts, currentPagination};
@@ -103,16 +104,17 @@ const fetchNewProducts = async() => {
  * @param  {Array} products
  */
 const renderProducts = products => {
+  console.log(products)
   if(selectBrand.value != "all"){
     products = products.filter(prod => prod.brand == selectBrand.value);
   }
 
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
-  const template = products
-    .map(product => {
-      return `
-      <div class="product" id=${product.uuid}>
+  const template = products.map(product => {
+    
+    return `
+      <div class="product" id=${product._id}>
         <span>${product.brand}</span>
         <a href="${product.link}" target="_blank">${product.name}</a>
         <span>${product.price}</span>
@@ -179,6 +181,9 @@ function sortProductsDate(products,sort_type){
 function selectResonablePrice(products){
   return products.filter(a => a.price <=50);
 };
+function selectExpensivePrice(products){
+  return products.filter(a => a.price >50);
+};
 
 
 function sortProducts(products,sort_type){
@@ -187,6 +192,10 @@ function sortProducts(products,sort_type){
   }
   else if(sort_type == "reasonable"){
     return selectResonablePrice(products);
+  }
+
+  else if(sort_type == "expensive"){
+    return selectExpensivePrice(products);
   }
   return products;
 };
@@ -231,12 +240,13 @@ const renderIndicators = (pagination,products) => {
     return 0;
   });
   //console.log(prods);
+  /*
   console.log(prods[1]);
   fetchNewProducts().then(result =>newProd.innerHTML =result );
   spanp50.innerHTML = prods[parseInt(prods.length/2+1)].lastElementChild.innerHTML;
   spanp90.innerHTML = prods[parseInt(prods.length*0.90+1)].lastElementChild.innerHTML;
   spanp95.innerHTML = prods[parseInt(prods.length*0.95+1)].lastElementChild.innerHTML;
-  
+  */
   //spanp50.innerHTML = spanp50.innerHTML/(prods.length-1))
 };
 
@@ -246,6 +256,7 @@ const render = (products, pagination, brandlist = false) => {
     renderBrands(brands)
     selectBrand.value = "all";
   }
+
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination,products);
